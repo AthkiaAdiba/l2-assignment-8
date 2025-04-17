@@ -36,15 +36,11 @@ model ServiceRecord {
   serviceDate    DateTime
   completionDate DateTime?
   description    String
-  status         ServiceStatus
+  status         String
 
   bike Bike @relation(fields: [bikeId], references: [bikeId])
 
   @@map("serviceRecords")
 }
 
-enum ServiceStatus {
-  pending
-  in_progress @map("in-progress")
-  done
-}
+

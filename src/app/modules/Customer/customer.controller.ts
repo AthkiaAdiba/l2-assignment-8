@@ -1,23 +1,25 @@
 import { Request, Response } from "express";
 import { CustomerServices } from "./customer.service";
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
+import { StatusCodes } from "http-status-codes";
 
-const createCustomer = async (req: Request, res: Response) => {
-  try {
-    const result = await CustomerServices.createCustomerIntoDB(req.body);
+const createCustomer = catchAsync(async (req, res) => {
+  const result = await CustomerServices.createCustomerIntoDB(req.body);
 
-    res.status(201).json({
-      success: true,
-      message: "Customer created successfully!",
-      data: result,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err || "Something went wrong!",
-      data: err,
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: "Customer created successfully!",
+    data: result,
+  });
+
+  // res.status(201).json({
+  //   success: true,
+  //   message: "Customer created successfully!",
+  //   data: result,
+  // });
+});
 
 const getAllCustomers = async (req: Request, res: Response) => {
   try {

@@ -6,14 +6,12 @@ const prisma = new PrismaClient();
 const createServiceRecordIntoDB = async (payload: ServiceRecord) => {
   const { description, serviceDate, bikeId, status } = payload;
 
-  const mappedStatus = mapStatus(status);
-
   const result = await prisma.serviceRecord.create({
     data: {
       bikeId,
       serviceDate,
       description,
-      status: mappedStatus,
+      status,
     },
   });
 
@@ -33,7 +31,7 @@ const getOldPendingOrInProgressServicesFromDB = async () => {
   const result = await prisma.serviceRecord.findMany({
     where: {
       status: {
-        in: ["in_progress", "pending"],
+        in: ["in-progress", "pending"],
       },
       serviceDate: {
         lt: sevenDaysAgo,
