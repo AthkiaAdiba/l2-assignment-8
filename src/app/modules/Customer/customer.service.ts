@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Customer } from "@prisma/client";
+import { prisma } from "../../utils/prismaClient";
 
 const createCustomerIntoDB = async (payload: any) => {
   const result = await prisma.customer.create({
@@ -17,7 +16,7 @@ const getAllCustomersFromDB = async () => {
 };
 
 const getSingleCustomerFromDB = async (id: string) => {
-  const result = await prisma.customer.findUnique({
+  const result = await prisma.customer.findUniqueOrThrow({
     where: {
       customerId: id,
     },
@@ -26,7 +25,16 @@ const getSingleCustomerFromDB = async (id: string) => {
   return result;
 };
 
-const updateSingleCustomerIntoDB = async (id: string, payload: any) => {
+const updateSingleCustomerIntoDB = async (
+  id: string,
+  payload: Partial<Customer>
+) => {
+  prisma.customer.findFirstOrThrow({
+    where: {
+      customerId: id,
+    },
+  });
+
   const result = await prisma.customer.update({
     where: {
       customerId: id,
@@ -38,6 +46,12 @@ const updateSingleCustomerIntoDB = async (id: string, payload: any) => {
 };
 
 const deleteSingleCustomerIntoDB = async (id: string) => {
+  prisma.customer.findFirstOrThrow({
+    where: {
+      customerId: id,
+    },
+  });
+
   const result = await prisma.customer.delete({
     where: {
       customerId: id,

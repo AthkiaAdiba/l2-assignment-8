@@ -1,7 +1,5 @@
-import { PrismaClient, ServiceRecord } from "@prisma/client";
-import { mapStatus } from "./serviceRecord.utils";
-
-const prisma = new PrismaClient();
+import { ServiceRecord } from "@prisma/client";
+import { prisma } from "../../utils/prismaClient";
 
 const createServiceRecordIntoDB = async (payload: ServiceRecord) => {
   const { description, serviceDate, bikeId, status } = payload;
@@ -43,7 +41,7 @@ const getOldPendingOrInProgressServicesFromDB = async () => {
 };
 
 const getSingleServiceRecordFromDB = async (id: string) => {
-  const result = await prisma.serviceRecord.findUnique({
+  const result = await prisma.serviceRecord.findUniqueOrThrow({
     where: {
       serviceId: id,
     },

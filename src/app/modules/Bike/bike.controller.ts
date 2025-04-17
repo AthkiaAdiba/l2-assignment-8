@@ -1,61 +1,42 @@
-import { Request, Response } from "express";
 import { BikeServices } from "./bike.service";
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
+import { StatusCodes } from "http-status-codes";
 
-const createBike = async (req: Request, res: Response) => {
-  try {
-    const result = await BikeServices.createBikeIntoDB(req.body);
+const createBike = catchAsync(async (req, res) => {
+  const result = await BikeServices.createBikeIntoDB(req.body);
 
-    res.status(201).json({
-      success: true,
-      message: "Bike added successfully!",
-      data: result,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err || "Something went wrong!",
-      data: err,
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: "Bike added successfully!",
+    data: result,
+  });
+});
 
-const getAllBikes = async (req: Request, res: Response) => {
-  try {
-    const result = await BikeServices.getAllBikeFromDB();
+const getAllBikes = catchAsync(async (req, res) => {
+  const result = await BikeServices.getAllBikeFromDB();
 
-    res.status(200).json({
-      success: true,
-      message: "Bikes fetched successfully!",
-      data: result,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err || "Something went wrong!",
-      data: err,
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Bikes fetched successfully!",
+    data: result,
+  });
+});
 
-const getSingleBike = async (req: Request, res: Response) => {
+const getSingleBike = catchAsync(async (req, res) => {
   const { bikeId } = req.params;
 
-  try {
-    const result = await BikeServices.getSingleBikeFromDB(bikeId);
+  const result = await BikeServices.getSingleBikeFromDB(bikeId);
 
-    res.status(201).json({
-      success: true,
-      message: "Bike fetched successfully!",
-      data: result,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err || "Something went wrong!",
-      data: err,
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Bike fetched successfully!",
+    data: result,
+  });
+});
 
 export const BikeControllers = {
   createBike,

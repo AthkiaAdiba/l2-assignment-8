@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import { CustomerServices } from "./customer.service";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
@@ -13,90 +12,59 @@ const createCustomer = catchAsync(async (req, res) => {
     message: "Customer created successfully!",
     data: result,
   });
-
-  // res.status(201).json({
-  //   success: true,
-  //   message: "Customer created successfully!",
-  //   data: result,
-  // });
 });
 
-const getAllCustomers = async (req: Request, res: Response) => {
-  try {
-    const result = await CustomerServices.getAllCustomersFromDB();
+const getAllCustomers = catchAsync(async (req, res) => {
+  const result = await CustomerServices.getAllCustomersFromDB();
 
-    res.status(201).json({
-      success: true,
-      message: "Customers fetched successfully!",
-      data: result,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err || "Something went wrong!",
-      data: err,
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Customers fetched successfully!",
+    data: result,
+  });
+});
 
-const getSingleCustomer = async (req: Request, res: Response) => {
+const getSingleCustomer = catchAsync(async (req, res) => {
   const { customerId } = req.params;
-  try {
-    const result = await CustomerServices.getSingleCustomerFromDB(customerId);
 
-    res.status(200).json({
-      success: true,
-      message: "Customer fetched successfully!",
-      data: result,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err || "Something went wrong!",
-      data: err,
-    });
-  }
-};
+  const result = await CustomerServices.getSingleCustomerFromDB(customerId);
 
-const updateSingleCustomer = async (req: Request, res: Response) => {
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Customer fetched successfully!",
+    data: result,
+  });
+});
+
+const updateSingleCustomer = catchAsync(async (req, res) => {
   const { customerId } = req.params;
-  try {
-    const result = await CustomerServices.updateSingleCustomerIntoDB(
-      customerId,
-      req.body
-    );
 
-    res.status(200).json({
-      success: true,
-      message: "Customer updated successfully!",
-      data: result,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err || "Something went wrong!",
-      data: err,
-    });
-  }
-};
+  const result = await CustomerServices.updateSingleCustomerIntoDB(
+    customerId,
+    req.body
+  );
 
-const deleteSingleCustomer = async (req: Request, res: Response) => {
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Customer updated successfully!",
+    data: result,
+  });
+});
+
+const deleteSingleCustomer = catchAsync(async (req, res) => {
   const { customerId } = req.params;
-  try {
-    await CustomerServices.deleteSingleCustomerIntoDB(customerId);
 
-    res.status(200).json({
-      success: true,
-      message: "Customer deleted successfully!",
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err || "Something went wrong!",
-      data: err,
-    });
-  }
-};
+  await CustomerServices.deleteSingleCustomerIntoDB(customerId);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Customer deleted successfully!",
+  });
+});
 
 export const CustomerControllers = {
   createCustomer,

@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../utils/prismaClient";
 
 const createBikeIntoDB = async (payload: any) => {
   const result = await prisma.bike.create({
@@ -17,7 +15,7 @@ const getAllBikeFromDB = async () => {
 };
 
 const getSingleBikeFromDB = async (id: string) => {
-  const result = await prisma.bike.findUnique({
+  const result = await prisma.bike.findUniqueOrThrow({
     where: {
       bikeId: id,
     },
