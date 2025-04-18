@@ -48,8 +48,8 @@ yarn install
 Create a `.env` file in the root directory with the following structure:
 
 ```bash
-DATABASE_URL="postgresql://postgres.lxfvogekdvshtuvzatux:48466648@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres"
-DIRECT_URL="postgresql://postgres.lxfvogekdvshtuvzatux:48466648@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres"
+DATABASE_URL=your_transaction_pooler_url_of_supabase
+DIRECT_URL=your_session_pooler_url_of_supabase
 PORT=5000
 ```
 
