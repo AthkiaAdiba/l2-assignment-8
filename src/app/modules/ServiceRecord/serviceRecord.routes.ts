@@ -14,4 +14,9 @@ router.get(
 
 router.get("/:serviceId", ServiceRecordControllers.getSingleServiceRecord);
 
+router.put(
+  "/:serviceId/complete",
+  ServiceRecordControllers.toSetCompletionServiceRecord
+);
+
 export const ServiceRecordRoutes = router;

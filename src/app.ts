@@ -16,12 +16,12 @@ app.use(express.urlencoded({ extended: true }));
 // routes
 app.use("/api", router);
 
-app.use(globalErrorHandler);
-
-app.use(notFound);
-
 app.get("/", (req: Request, res: Response) => {
   res.send("Bike Servicing Management System....");
 });
+
+app.use(globalErrorHandler);
+
+app.use(notFound);
 
 export default app;

@@ -54,9 +54,27 @@ const getSingleServiceRecord = catchAsync(async (req, res) => {
   });
 });
 
+const toSetCompletionServiceRecord = catchAsync(async (req, res) => {
+  const { serviceId } = req.params;
+  const { completionDate } = req.body;
+
+  const result = await ServiceRecordServices.toSetCompletionServiceRecordIntoDB(
+    serviceId,
+    completionDate
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Service marked as completed!",
+    data: result,
+  });
+});
+
 export const ServiceRecordControllers = {
   createServiceRecord,
   getAllServiceRecords,
   getSingleServiceRecord,
   getOldPendingOrInProgressServices,
+  toSetCompletionServiceRecord,
 };

@@ -50,9 +50,33 @@ const getSingleServiceRecordFromDB = async (id: string) => {
   return result;
 };
 
+const toSetCompletionServiceRecordIntoDB = async (
+  id: string,
+  completionDate: any
+) => {
+  await prisma.serviceRecord.findUniqueOrThrow({
+    where: {
+      serviceId: id,
+    },
+  });
+
+  const result = await prisma.serviceRecord.update({
+    where: {
+      serviceId: id,
+    },
+    data: {
+      completionDate: completionDate ? new Date(completionDate) : new Date(),
+      status: "done",
+    },
+  });
+
+  return result;
+};
+
 export const ServiceRecordServices = {
   createServiceRecordIntoDB,
   getAllServiceRecordsFromDB,
   getSingleServiceRecordFromDB,
   getOldPendingOrInProgressServicesFromDB,
+  toSetCompletionServiceRecordIntoDB,
 };
